@@ -1,0 +1,39 @@
+body {
+  background: #0d0e0f;
+  font-family: 'Comic Neue', cursive;
+}
+
+.app-background-color {
+  background: #0d0e0f !important;
+  color: white !important;
+}
+
+.app-logo {
+  width: 150px;
+}
+
+.content {
+  padding-top: 100px;
+  font-family: 'Comic Neue', cursive !important;
+  color: white;
+}
+
+.app-primary-color {
+  font-family: 'Comic Neue', cursive !important;
+  color: 0d0e0f !important;
+}
+
+.app-secondary-color {
+  font-family: 'Comic Neue', cursive !important;
+  color: white !important;
+}
+
+.app-header {
+  font-family: 'Comic Neue', cursive !important;
+  color: white !important;
+  font-size: 45px;
+}
+
+/* div {
+  border: 1px solid red;
+} */
