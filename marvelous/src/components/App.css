@@ -34,6 +34,10 @@ body {
   font-size: 45px;
 }
 
+.app-font {
+  font-family: 'Comic Neue', cursive !important;
+}
+
 /* div {
   border: 1px solid red;
 } */

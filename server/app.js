@@ -28,8 +28,11 @@ app.set('view engine', 'ejs');
 
 
 app.get("/characters", (req, res) => {
-
-    marvel.get('characters', { params: { events: 238 } }).then(response => {
+    let page = req.query.page;
+    if (Number.isNaN(page)) {
+        page = 1;
+    }
+    marvel.get('characters', { params: { events: '238,314', limit: 18, offset: page * 18 } }).then(response => {
         let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'events', 'series']));
         res.send(results)
     }).catch(error => {
@@ -39,9 +42,28 @@ app.get("/characters", (req, res) => {
 
 });
 
-app.get("/movies", (req, res) => {
 
-    marvel.get('movies').then(response => {
+app.get("/events", (req, res) => {
+    let page = req.query.page;
+    if (Number.isNaN(page)) {
+        page = 1;
+    }
+    marvel.get('events', { params: { limit: 18, offset: page * 18 } }).then(response => {
+        let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'series']));
+        res.send(results)
+    }).catch(error => {
+        console.log(error)
+        res.send(error)
+    })
+
+});
+
+app.get("/stories", (req, res) => {
+    let page = req.query.page;
+    if (Number.isNaN(page)) {
+        page = 1;
+    }
+    marvel.get('series', { params: { limit: 18, offset: page * 18 } }).then(response => {
         let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'events', 'series']));
         res.send(results)
     }).catch(error => {
@@ -51,6 +73,9 @@ app.get("/movies", (req, res) => {
 
 });
 
+
+
+//For testing 
 app.get("/events/name/:name", (req, res) => {
 
     marvel.get('events', { params: { nameStartsWith: req.params.name } }).then(response => {

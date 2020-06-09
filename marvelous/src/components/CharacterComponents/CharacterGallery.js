@@ -2,60 +2,43 @@ import React from 'react';
 
 const CharacterGallery = (props) => {
 
+
     if (!props.characters) {
         return (
-            <div className="ui inline ">
-                <div class="ui active center dimmer">
-                    <div class="ui text loader">Loading</div>
-                </div>
+            <div className="ui active medium text loader">
+                Loading...
             </div>
         )
     }
 
     var characters = props.characters
-    console.log(characters)
+
+    if (!characters.length) {
+        return (
+            <p>No Results Found</p>
+        )
+    }
 
     return (
-        <div class="ui three column grid">
+        <div className="ui three column grid">
 
-            {characters.map(character => {
-
+            {characters.map((character, index) => {
                 let imageUrl = `${character.thumbnail.path}.${character.thumbnail.extension}`
+                let wikiUrl = character.urls.filter(url => url.type === "wiki")[0];
+                wikiUrl = wikiUrl ? wikiUrl.url : character.urls[0].url;
                 return (
-                    <div className="column">
-                        <div className="ui fluid card">
-                            <div className="ui fluid image" >
-                                <img src={imageUrl} style={{ width: '357px', height: '357px' }} width="357px" height="357" alt={character.name} />
+                    <div key={index} className="column ">
+                        <div className="ui fluid card animate__animated animate__fadeIn">
+                            <div className="ui fluid image " >
+                                <img src={imageUrl} style={{ width: '357px', height: '357px' }} alt={character.name} />
                             </div>
-                            <div class="content app-background-color" >
-                                <div class="header app-secondary-color">{character.name}</div>
+                            <div className="content app-background-color" >
+                                <a className="header app-secondary-color" href={wikiUrl}>{character.name}</a>
                             </div>
                         </div>
                     </div>
                 )
-            })
-            }
-
-            {/* <div class="column">
-                <div class="ui fluid card">
-                    <div class="image">
-                        <img src="/images/avatar/large/helen.jpg" />
-                    </div>
-                    <div class="content">
-                        <a class="header">Helen Troy</a>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="ui fluid card">
-                    <div class="image">
-                        <img src="/images/avatar/large/elliot.jpg" />
-                    </div>
-                    <div class="content">
-                        <a class="header">Elliot Fu</a>
-                    </div>
-                </div>
-            </div> */}
+            })}
         </div>
     )
 }
