@@ -9,15 +9,22 @@ const Events = (props) => {
     let maximumCEvents = 18;
 
     const [events, setEvents] = useState();
-    let page = qs.parse(props.location.search).page || 1;
+    const [errorMessage, setErrorMessage] = useState('');
+
+    let page = qs.parse(props.location.search).page || 1; // page number
 
     useEffect(() => {
+        setEvents(null)
+        const getEvents = async () => {
+            try {
+                let response = await marvel.get('events', { params: { page } })
+                setEvents(response.data)
+            } catch (error) {
+                setErrorMessage('Something\'s wrong. Sorry about that :(')
+            };
+        }
         getEvents()
     }, [page])
-
-    const getEvents = async () => {
-        setEvents((await marvel.get('events')).data)
-    }
 
     const renderPagination = () => {
         if (!events) return;
@@ -26,13 +33,25 @@ const Events = (props) => {
         return <Pagination baseUrl='/events' currentIndex={page} />
     }
 
+    const renderEventGallery = () => {
+        if (errorMessage) {
+            return (
+                <p>{errorMessage}</p>
+            )
+        } else {
+            return (
+                <EventGallery events={events} />
+            )
+        }
+    }
+
     return (
         <div>
             <h1 className="ui header app-secondary-color app-header"  >
                 <i><b>EVENTS</b></i>
             </h1>
             <br></br>
-            <EventGallery events={events} />
+            {renderEventGallery()}
             {renderPagination()}
             <br /><br /><br />
         </div>

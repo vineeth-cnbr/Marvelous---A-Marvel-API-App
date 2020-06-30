@@ -10,12 +10,19 @@ const Characters = (props) => {
     let maximumCharacters = 18;
 
     const [characters, setCharacters] = useState();
-    let page = qs.parse(props.location.search).page || 1;
+    const [errorMessage, setErrorMessage] = useState('');
+
+    let page = qs.parse(props.location.search).page || 1; // page number
 
     useEffect(() => {
         setCharacters(null)
         const getCharacters = async () => {
-            setCharacters((await marvel.get('characters', { params: { page } })).data)
+            try {
+                let response = await marvel.get('characters', { params: { page } })
+                setCharacters(response.data)
+            } catch (error) {
+                setErrorMessage('Something\'s wrong. Sorry about that :(')
+            };
         }
         getCharacters()
     }, [page])
@@ -30,13 +37,25 @@ const Characters = (props) => {
         return <Pagination baseUrl='/characters' currentIndex={page} />
     }
 
+    const renderCharacterGallery = () => {
+        if (errorMessage) {
+            return (
+                <p>{errorMessage}</p>
+            )
+        } else {
+            return (
+                <CharacterGallery characters={characters} />
+            )
+        }
+    }
+
     return (
         <div>
             <h1 className="ui header app-secondary-color app-header"  >
                 <i><b> CHARACTERS</b></i>
             </h1>
             <br></br>
-            <CharacterGallery characters={characters} />
+            {renderCharacterGallery()}
             <br /><br /><br />
             {renderPagination()}
             <br /><br /><br />
