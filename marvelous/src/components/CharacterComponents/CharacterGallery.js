@@ -24,6 +24,7 @@ const CharacterGallery = (props) => {
 
             {characters.map((character, index) => {
                 let imageUrl = `${character.thumbnail.path}.${character.thumbnail.extension}`
+                imageUrl = imageUrl.replace('http', 'https'); //Should remove this in future
                 let wikiUrl = character.urls.filter(url => url.type === "wiki")[0];
                 wikiUrl = wikiUrl ? wikiUrl.url : character.urls[0].url;
                 return (

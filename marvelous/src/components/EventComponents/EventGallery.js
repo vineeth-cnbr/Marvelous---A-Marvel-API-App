@@ -19,6 +19,7 @@ const EventGallery = (props) => {
             {events.map((event, index) => {
 
                 let imageUrl = `${event.thumbnail.path}.${event.thumbnail.extension}`
+                imageUrl = imageUrl.replace('http', 'https'); //Should remove this in future
                 return (
                     <div key={index} className="column">
                         <div className="ui fluid card">
