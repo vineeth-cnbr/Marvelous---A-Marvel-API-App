@@ -5,6 +5,7 @@ import './App.css';
 import history from '../history';
 import Characters from './CharacterComponents/Characters';
 import Events from './EventComponents/Events';
+import Quiz from './QuizComponents/Quiz';
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                         <Route path="/" exact component={Characters} />
                         <Route path="/characters" component={Characters} />
                         <Route path="/events" component={Events} />
+                        <Route path="/quiz" component={Quiz} />
                     </Switch>
                 </div>
             </Router>

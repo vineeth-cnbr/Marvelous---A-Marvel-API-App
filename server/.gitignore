@@ -1,9 +1,12 @@
 git # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+<<<<<<< HEAD
 # secret
 marvelCredentials.json
 
 # heroku file
 Procfile 
+=======
+>>>>>>> f75a43e9bbe647c678c64c20de497e6a8993bb42
 
 # dependencies
 /node_modules
@@ -18,10 +21,7 @@ Procfile
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env
 
 npm-debug.log*
 yarn-debug.log*

@@ -1,10 +1,9 @@
+require('dotenv').config();
 let axios = require('axios');
 let md5 = require('md5');
-var marvelCredentials = require('../marvelCredentials.json');
 
-
-const public = marvelCredentials.public;
-const private = marvelCredentials.private;
+const public = process.env.MARVEL_CREDENTIALS_PUBLIC;
+const private = process.env.MARVEL_CREDENTIALS_PRIVATE;
 
 let marvel = axios.create({
     baseURL: 'http://gateway.marvel.com/v1/public/',

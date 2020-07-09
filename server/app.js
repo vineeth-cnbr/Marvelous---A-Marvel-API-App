@@ -5,7 +5,8 @@ var path = __dirname + '/views/';
 var bodyParser = require('body-parser');
 var morgan = require('morgan')
 var marvel = require('./api/marvel');
-var _ = require('lodash')
+var _ = require('lodash');
+var quiz = require('./routes/quiz');
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -25,7 +26,8 @@ app.set('port', (process.env.PORT || 8000));
 app.set('views', path);
 app.set('view engine', 'ejs');
 
-
+//Quizzing routes
+app.use('/quiz', quiz)
 
 app.get("/characters", (req, res) => {
     let page = req.query.page;
@@ -57,23 +59,6 @@ app.get("/events", (req, res) => {
     })
 
 });
-
-app.get("/stories", (req, res) => {
-    let page = req.query.page;
-    if (Number.isNaN(page)) {
-        page = 1;
-    }
-    marvel.get('series', { params: { limit: 18, offset: page * 18 } }).then(response => {
-        let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'events', 'series']));
-        res.send(results)
-    }).catch(error => {
-        console.log(error)
-        res.send(error)
-    })
-
-});
-
-
 
 //For testing 
 app.get("/events/name/:name", (req, res) => {
