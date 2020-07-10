@@ -1,4 +1,5 @@
 import React from 'react';
+import CharacterCard from './CharacterCrad';
 
 const CharacterGallery = (props) => {
 
@@ -20,23 +21,13 @@ const CharacterGallery = (props) => {
     }
 
     return (
-        <div className="ui three column grid">
+        <div className="ui stackable three column grid">
 
             {characters.map((character, index) => {
-                let imageUrl = `${character.thumbnail.path}.${character.thumbnail.extension}`
-                imageUrl = imageUrl.replace('http', 'https'); //Should remove this in future
-                let wikiUrl = character.urls.filter(url => url.type === "wiki")[0];
-                wikiUrl = wikiUrl ? wikiUrl.url : character.urls[0].url;
+
                 return (
                     <div key={index} className="column ">
-                        <div className="ui fluid card animate__animated animate__fadeIn">
-                            <div className="ui fluid image " >
-                                <img src={imageUrl} style={{ width: '357px', height: '357px' }} alt={character.name} />
-                            </div>
-                            <div className="content app-background-color" >
-                                <a className="header app-secondary-color" href={wikiUrl}>{character.name}</a>
-                            </div>
-                        </div>
+                        <CharacterCard character={character} />
                     </div>
                 )
             })}
