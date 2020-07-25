@@ -22,10 +22,10 @@ const Navbar = (props) => {
                     className={`item ${isActiveMenu('events')}`}
                     to="/events"
                     onClick={e => setActiveMenu('events')}>Events</Link>
-                {/* <Link
+                <Link
                     className={`item ${isActiveMenu('quiz')}`}
                     to="/quiz"
-                    onClick={e => setActiveMenu('quiz')}>Quiz</Link> */}
+                    onClick={e => setActiveMenu('quiz')}>Quiz</Link>
             </div>
         </div >
     );

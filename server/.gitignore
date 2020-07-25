@@ -1,12 +1,4 @@
 git # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-<<<<<<< HEAD
-# secret
-marvelCredentials.json
-
-# heroku file
-Procfile 
-=======
->>>>>>> f75a43e9bbe647c678c64c20de497e6a8993bb42
 
 # dependencies
 /node_modules

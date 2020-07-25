@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api_url = (process.env.NODE_ENV === 'production') ? 'https://marvel-land.herokuapp.com' : 'http://localhost:8000'
+const api_url = process.env.REACT_APP_API
 export default axios.create({
     baseURL: api_url
 })

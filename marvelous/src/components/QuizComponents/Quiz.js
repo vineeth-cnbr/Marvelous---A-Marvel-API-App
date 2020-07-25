@@ -11,7 +11,6 @@ const Quiz = () => {
             <br></br>
             <div className="ui container">
                 <QuizMaster />
-
             </div>
             <br /><br /><br />
         </div>
