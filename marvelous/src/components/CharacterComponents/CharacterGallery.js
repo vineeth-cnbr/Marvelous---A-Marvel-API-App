@@ -1,5 +1,5 @@
 import React from 'react';
-import CharacterCard from './CharacterCrad';
+import CharacterCard from './CharacterCard';
 
 const CharacterGallery = (props) => {
 

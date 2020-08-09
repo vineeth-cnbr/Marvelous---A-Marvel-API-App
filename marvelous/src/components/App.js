@@ -6,6 +6,7 @@ import history from '../history';
 import Characters from './CharacterComponents/Characters';
 import Events from './EventComponents/Events';
 import Quiz from './QuizComponents/Quiz';
+import HighScores from './QuizComponents/HighScores';
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                         <Route path="/characters" component={Characters} />
                         <Route path="/events" component={Events} />
                         <Route path="/quiz" component={Quiz} />
+                        <Route path="/highscores" component={HighScores} />
                     </Switch>
                 </div>
             </Router>

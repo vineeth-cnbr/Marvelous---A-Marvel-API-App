@@ -4,8 +4,8 @@ import Question from './Question';
 import Result from './Result';
 import Loading from './Loading';
 import { socket } from '../../apis/sockets';
-import { VIEWS, NUMBER_OF_QUESTIONS, events } from '../../constants'
-
+import { VIEWS, NUMBER_OF_QUESTIONS } from '../../constants'
+import events from '../../../../server/sockets/events';
 
 class QuizMaster extends Component {
 
@@ -14,31 +14,16 @@ class QuizMaster extends Component {
         questions: [],
         currentQuestion: 0,
         loadingProgress: 0,
-        name: ''
+        points: 0,
+        name: 'vineeth'
     }
 
     constructor(props) {
         super(props);
         socket.on(events.QUESTION, this.addQuestion);
-        socket.on(events.GAME, this.startGame);
     }
 
-    //sets gameId to state
-    startGame = (gameId) => {
-        this.setState({ gameId });
-    }
-
-    //restart the game 
-    restartGame = () => {
-        this.setState({
-            view: VIEWS.START,
-            questions: [],
-            currentQuestion: 0,
-            loadingProgress: 0,
-            name: ''
-        })
-    }
-    //callback that updates the state to add a question, doesnt return anything
+    //updates the state to add a question, doesnt return anything
     addQuestion = (question) => {
         let questions = this.state.questions;
         questions.push(question);
@@ -51,10 +36,9 @@ class QuizMaster extends Component {
 
     //When the user clicks start quiz
     onStartLoading = () => {
-        socket.emit(events.STARTGAME, this.state.name);
         this.setState({ view: VIEWS.LOADING });
         for (let index = 0; index < NUMBER_OF_QUESTIONS; index++) {
-            socket.emit(events.REQUESTQUESTION);
+            socket.emit('requestQuestion');
         }
 
     }
@@ -69,7 +53,24 @@ class QuizMaster extends Component {
     }
 
     //For the next question
-    onNext = () => {
+    onNext = (answer) => {
+        console.log("onNext");
+        let points = this.state.points;
+        //If the user has not passed
+        if (answer !== null) {
+            //If answer is correct
+            if (answer) {
+                points += 10;
+            } else {
+                points -= 5;
+            }
+            this.setState({
+                points
+            }, () => {
+                console.log("update", points)
+            });
+        }
+
         if ((this.state.currentQuestion === NUMBER_OF_QUESTIONS - 1)) {
             this.setState({
                 view: VIEWS.RESULT
@@ -79,6 +80,7 @@ class QuizMaster extends Component {
                 currentQuestion: this.state.currentQuestion + 1
             })
         }
+
     }
 
     onChangeName = (name) => {
@@ -87,8 +89,8 @@ class QuizMaster extends Component {
 
     render() {
 
-        let { view, questions, loadingProgress, currentQuestion, name, gameId } = this.state;
-
+        let { view, questions, loadingProgress, currentQuestion, points, name } = this.state;
+        console.log("name", name);
         switch (view) {
             case VIEWS.START:
                 return (
@@ -100,11 +102,11 @@ class QuizMaster extends Component {
                 )
             case VIEWS.QUESTION:
                 return (
-                    <Question gameId={gameId} question={questions[currentQuestion]} number={currentQuestion + 1} next={this.onNext} />
+                    <Question question={questions[currentQuestion]} number={currentQuestion + 1} next={this.onNext} />
                 );
             case VIEWS.RESULT:
                 return (
-                    <Result gameId={gameId} onStart={this.restartGame} name={name} />
+                    <Result points={points} onStart={this.onStartLoading} name={name} />
 
                 );
             default: return null;

@@ -13,6 +13,12 @@ const EventGallery = (props) => {
 
     var events = props.events
 
+    if (!events.length) {
+        return (
+            <p>No Results Found</p>
+        )
+    }
+
     return (
         <div className="ui stackable three column grid">
             {events.map((event, index) => {

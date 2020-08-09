@@ -1,5 +1,7 @@
 const marvel = require('../api/marvel')
 const questions = require('../api/questions');
+const games = require('../api/games');
+const { child } = require('../api/questions');
 
 const getRandomOptions = (characters) => {
     let nameList = []
@@ -25,6 +27,7 @@ const getRandomOptions = (characters) => {
 }
 
 const getImageUrl = (item) => {
+    if (!item.thumbnail) return null;
     let imageUrl = `${item.thumbnail.path}.${item.thumbnail.extension}`
     imageUrl = imageUrl.replace('http', 'https');
     return imageUrl;
@@ -49,18 +52,20 @@ const shuffleOptions = (options) => {
     return options;
 }
 
-exports.getQuestion = async () => {
+exports.createQuestion = async () => {
     try {
         let result = {};
         let imageUrl = '', characters = [], character = {};
         //Get a random character
         do {
-            let randomOffset = Math.floor((Math.random() * 57) + 1); // 57 is the max number of characters for events 29,253
-            let response = await marvel.get('characters', { params: { events: '29, 253', offset: randomOffset } })
+            let randomOffset = Math.floor((Math.random() * 167) + 1); // 57 is the max number of characters for events 29,253
+            let response = await marvel.get('characters', { params: { events: '29,253,238,240,321,297', offset: randomOffset } })
             characters = response.data.data.results;
-            character = characters[0];
-            imageUrl = getImageUrl(character);
-        } while (imageUrl.includes('image_not_available') || characters.length < 5)
+            if (characters && characters.length != 0) {
+                character = characters[0];
+                imageUrl = getImageUrl(character);
+            }
+        } while (!characters || !imageUrl || imageUrl.includes('image_not_available') || characters.length < 5)
 
         result.imageUrl = imageUrl;
 
@@ -73,16 +78,58 @@ exports.getQuestion = async () => {
         options = shuffleOptions(options);
         result.options = options;
 
-        //Create a Question
+        //Create a Question and save to firebase
         let question = questions.push();
         let questionId = (await question).key;
-        result.questionId = questionId;
+        (await question).set({ answer: character.name })
+        result.questionId = questionId; //send question id
 
-        //send question id
-        console.log(result);
         return result
     } catch (error) {
         console.log(error)
         throw error;
     }
 }
+
+exports.deleteQuestion = (questionId) => {
+    return questions.child(questionId).remove()
+}
+
+exports.checkAnswer = (questionId, answer) => {
+    return questions.child(questionId).once("value").then((snapshot) => {
+        let correctAnswer = snapshot.val().answer;
+        return correctAnswer === answer;
+    })
+}
+
+//creates a new game and returns gameid
+exports.createNewGame = async (personName) => {
+    let game = games.push();
+    let gameId = (await game).key;
+    (await game).set({ name: personName, score: 0 })
+    return gameId;
+}
+
+exports.updateGameScore = async (gameId, isCorrect) => {
+    let existingScore = await this.getGameScore(gameId);
+    let newScore = existingScore + ((isCorrect) ? 10 : -5);
+    games.child(gameId).update({
+        score: newScore
+    })
+}
+
+exports.getGameScore = async (gameId) => {
+    let game = (await games.child(gameId).once('value')).val();
+    let score = game.score;
+    return score;
+}
+
+//Returns highscores
+exports.getHighScores = async () => {
+    //firebase realtime database doesnt support ordering by descending order, hence limitToLast is used instead of limitToFirst
+    let snapshot = (await games.orderByChild("score").limitToLast(10).once("value"));
+    let scores = [];
+    snapshot.forEach(snap => { scores.push(snap.val()) });
+    return scores;
+}
+this.getHighScores();

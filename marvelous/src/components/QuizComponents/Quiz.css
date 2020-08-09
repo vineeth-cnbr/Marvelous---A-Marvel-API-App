@@ -10,8 +10,33 @@
 }
 .arena {
   display: grid;
-  justify-content: center;
+  grid-template-columns: auto;
   align-content: center;
+}
+
+.loading-question {
+  display: grid;
+  align-content: center;
+  height: 26rem;
+}
+
+@media screen and (min-width: 40em) {
+  .arena {
+    grid-gap: 2rem;
+    grid-template-columns: auto auto;
+  }
+}
+
+.arena div {
+  display: grid;
+  justify-self: center;
+  align-self: center;
+}
+
+.question-number {
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 .quiz-options-grid-1 {

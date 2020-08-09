@@ -26,6 +26,11 @@ const Navbar = (props) => {
                     className={`item ${isActiveMenu('quiz')}`}
                     to="/quiz"
                     onClick={e => setActiveMenu('quiz')}>Quiz</Link>
+
+                <Link
+                    className={`item ${isActiveMenu('high scores')}`}
+                    to="/highscores"
+                    onClick={e => setActiveMenu('high scores')}>High Scores</Link>
             </div>
         </div >
     );

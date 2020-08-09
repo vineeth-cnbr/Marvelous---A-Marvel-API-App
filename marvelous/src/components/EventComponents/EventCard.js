@@ -8,7 +8,7 @@ const EventCard = ({ event }) => {
     imageUrl = imageUrl.replace('http', 'https'); //Should remove this in future
 
     return (
-        <div className="ui fluid card">
+        <div className="ui card">
             <div className="ui fluid image" >
                 <img src={imageUrl} style={{ width: '357px', height: '357px' }} alt={event.title} />
             </div>

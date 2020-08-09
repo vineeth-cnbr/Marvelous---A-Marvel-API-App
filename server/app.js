@@ -9,6 +9,8 @@ var _ = require('lodash');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var quizSocket = require('./sockets/quizSocket');
+const scores = require("./api/scores");
+const { getGameScore, getHighScores } = require("./util/quizHelpers");
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -41,7 +43,7 @@ app.get("/characters", (req, res) => {
         let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'events', 'series']));
         res.send(results)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         res.send(error)
     })
 
@@ -57,10 +59,33 @@ app.get("/events", (req, res) => {
         let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'series']));
         res.send(results)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         res.send(error)
     })
 
+});
+
+//Get the score of a game. Pass query as gameId
+app.get('/score', (req, res) => {
+    let gameId = req.query.gameId;
+    if (!gameId) {
+        res.sendStatus(500);
+    }
+    getGameScore(gameId).then(score => {
+        res.send({ score })
+    }).catch(error => {
+        console.error(error);
+    });
+});
+
+app.get('/highscores', (req, res) => {
+    getHighScores().then(scores => {
+        console.log("scores", scores);
+        res.send({ scores })
+    }).catch(error => {
+        console.error(error);
+        res.sendStatus(500);
+    })
 });
 
 //For testing 
@@ -70,11 +95,12 @@ app.get("/events/name/:name", (req, res) => {
         let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'events', 'series']));
         res.send(results)
     }).catch(error => {
-        console.log(error)
+        console.error(error)
         res.send(error)
     })
 
 });
+
 
 
 server.listen(app.get('port'), () => {

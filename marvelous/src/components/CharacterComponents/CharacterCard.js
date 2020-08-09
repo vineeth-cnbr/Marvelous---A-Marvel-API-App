@@ -10,7 +10,7 @@ const CharacterCard = ({ character }) => {
     wikiUrl = wikiUrl ? wikiUrl.url : character.urls[0].url;
 
     return (
-        <div className="ui fluid card animate__animated animate__fadeIn">
+        <div className="ui card animate__animated animate__fadeIn">
             <div className="ui fluid image " >
                 <img src={imageUrl} style={{ width: '357px', height: '357px' }} alt={character.name} />
             </div>
