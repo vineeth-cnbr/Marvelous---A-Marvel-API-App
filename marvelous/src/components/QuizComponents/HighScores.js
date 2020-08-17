@@ -10,7 +10,6 @@ const HighScores = () => {
 
   //When new scores are added
   useEffect(() => {
-    console.log('ue', newScore, highScores);
     if (newScore && highScores) {
       let newhighScores = highScores;
       newhighScores.push(newScore); // Add new Scores dynamically
