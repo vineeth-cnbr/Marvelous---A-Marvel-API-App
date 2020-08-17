@@ -7,13 +7,17 @@ import HighScores from './HighScores';
 const Result = ({ gameId, onStart, name }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [points, setPoints] = useState();
+  const [numberOfWrong, setNumberOfWrong] = useState(0);
+  const [numberOfRight, setNumberOfRight] = useState(0);
 
   useEffect(() => {
     marvel
       .get('score', { params: { gameId } })
       .then(({ data }) => {
         setIsLoading(false);
-        setPoints(data.score);
+        setPoints(data.game.score);
+        setNumberOfRight(data.game.correctAnswers);
+        setNumberOfWrong(data.game.wrongAnswers);
       })
       .catch((error) => console.error(error));
   }, [gameId]);
@@ -37,8 +41,12 @@ const Result = ({ gameId, onStart, name }) => {
       <h2>
         You got{' '}
         <span style={{ color: 'yellow', fontSize: '2.5rem' }}>{points}</span>{' '}
-        points !!
+        Points !!
       </h2>
+      <h3>
+        That's <span style={{ color: 'yellow' }}>{numberOfRight}</span> correct
+        and <span style={{ color: 'red' }}>{numberOfWrong}</span> wrong
+      </h3>
       <h3>Wanna go again? </h3>
       <StartGameButton onStart={onStart} name={name} />
       <br />

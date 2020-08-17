@@ -110,22 +110,39 @@ exports.checkAnswer = (questionId, answer) => {
 exports.createNewGame = async (personName) => {
     let game = games.push();
     let gameId = (await game).key;
-    (await game).set({ name: personName, score: 0 })
+    (await game).set({ name: personName, score: 0, correctAnswers: 0, wrongAnswers: 0 })
     return gameId;
 }
 
 exports.updateGameScore = async (gameId, isCorrect) => {
-    let existingScore = await this.getGameScore(gameId);
+    let game = await this.getGame(gameId);
+    let existingScore = game.score;
+    let correct = game.correctAnswers;
+    let wrong = game.wrongAnswers;
+    if (isCorrect) {
+        correct++;
+    } else {
+        wrong++;
+    }
     let newScore = existingScore + ((isCorrect) ? 10 : -5);
     games.child(gameId).update({
-        score: newScore
+        score: newScore,
+        correctAnswers: correct,
+        wrongAnswers: wrong
     })
 }
 
+//Returns game score of the game
 exports.getGameScore = async (gameId) => {
     let game = (await games.child(gameId).once('value')).val();
     let score = game.score;
     return score;
+}
+
+//Returns Game details
+exports.getGame = async (gameId) => {
+    let game = (await games.child(gameId).once('value')).val();
+    return game;
 }
 
 //Returns highscores

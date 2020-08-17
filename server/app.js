@@ -9,7 +9,7 @@ var _ = require('lodash');
 // var server = require('http').createServer(app);
 var quizSocket = require('./sockets/quizSocket');
 const scores = require("./api/scores");
-const { getGameScore, getHighScores } = require("./util/quizHelpers");
+const { getGameScore, getHighScores, getGame } = require("./util/quizHelpers");
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -75,8 +75,8 @@ app.get('/score', (req, res) => {
     if (!gameId) {
         res.sendStatus(500);
     }
-    getGameScore(gameId).then(score => {
-        res.send({ score })
+    getGame(gameId).then(game => {
+        res.send({ game })
     }).catch(error => {
         console.error(error);
     });
