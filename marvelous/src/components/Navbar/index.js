@@ -10,7 +10,7 @@ const Navbar = (props) => {
     const [, setActiveMenu, isActiveMenu] = useActiveMenu(path)
 
     return (
-        <div className="ui top fixed inverted segment menu">
+        <div className="ui top fixed stackable inverted segment menu" style={{ position: 'inherit' }}>
             <div className="ui container inverted secondary menu">
                 <img src='/img/marvelous-black.png' alt="marvelous app logo" className="app-logo item"></img>
 

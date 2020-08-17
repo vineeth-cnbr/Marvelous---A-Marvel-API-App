@@ -13,7 +13,7 @@ const App = () => {
         <div>
             <Router history={history}>
                 <Route path="/" component={Navbar} />
-                <div className="content ui container ">
+                <div className="content ui container " style={{ paddingTop: '50px' }}>
                     <Switch>
                         <Route path="/" exact component={Characters} />
                         <Route path="/characters" component={Characters} />
