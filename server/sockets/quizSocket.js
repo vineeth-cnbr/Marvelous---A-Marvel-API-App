@@ -3,18 +3,26 @@ const events = require("./events");
 const games = require("../api/games");
 
 module.exports = (socket) => {
-    console.log("New user connected");
+    console.log("New user connected to socket");
 
     //When client starts a quiz
     socket.on(events.STARTGAME, async (name) => {
-        let gameId = await createNewGame(name);
-        socket.emit(events.GAME, gameId);
+        try {
+            let gameId = await createNewGame(name);
+            socket.emit(events.GAME, gameId);
+        } catch (error) {
+            console.error(error);
+        }
     })
 
     //when client requests a question
     socket.on(events.REQUESTQUESTION, async () => {
-        let question = await createQuestion();
-        socket.emit(events.QUESTION, question);
+        try {
+            let question = await createQuestion();
+            socket.emit(events.QUESTION, question);
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     //When client checks for answer

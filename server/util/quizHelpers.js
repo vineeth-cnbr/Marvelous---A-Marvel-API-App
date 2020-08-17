@@ -56,14 +56,19 @@ exports.createQuestion = async () => {
     try {
         let result = {};
         let imageUrl = '', characters = [], character = {};
+        let tries = 10;
         //Get a random character
         do {
-            let randomOffset = Math.floor((Math.random() * 167) + 1); // 57 is the max number of characters for events 29,253
+            let randomOffset = Math.floor((Math.random() * 162) + 1); // 57 is the max number of characters for events 29,253
             let response = await marvel.get('characters', { params: { events: '29,253,238,240,321,297', offset: randomOffset } })
+
             characters = response.data.data.results;
             if (characters && characters.length != 0) {
                 character = characters[0];
                 imageUrl = getImageUrl(character);
+            }
+            if (!tries--) {
+                throw "Unable to Fetch Question"
             }
         } while (!characters || !imageUrl || imageUrl.includes('image_not_available') || characters.length < 5)
 
@@ -86,7 +91,6 @@ exports.createQuestion = async () => {
 
         return result
     } catch (error) {
-        console.log(error)
         throw error;
     }
 }

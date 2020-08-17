@@ -6,8 +6,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan')
 var marvel = require('./api/marvel');
 var _ = require('lodash');
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+// var server = require('http').createServer(app);
 var quizSocket = require('./sockets/quizSocket');
 const scores = require("./api/scores");
 const { getGameScore, getHighScores } = require("./util/quizHelpers");
@@ -18,6 +17,13 @@ app.use((req, res, next) => {
     next();
 });
 
+// Express server listening port
+app.set('port', (process.env.PORT || 8000));
+var server = app.listen(app.get('port'), () => {
+    console.log("Node app is running on port", app.get('port'));
+});
+var io = require('socket.io')(server);
+
 //Socket for quiz
 var quizNamespace = io.of('/quiz');
 quizNamespace.on('connection', quizSocket);
@@ -27,8 +33,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.set('port', (process.env.PORT || 8000));
-// app.use(express.static(__dirname + '/public'));
 
 
 app.set('views', path);
@@ -80,7 +84,6 @@ app.get('/score', (req, res) => {
 
 app.get('/highscores', (req, res) => {
     getHighScores().then(scores => {
-        console.log("scores", scores);
         res.send({ scores })
     }).catch(error => {
         console.error(error);
@@ -103,6 +106,4 @@ app.get("/events/name/:name", (req, res) => {
 
 
 
-server.listen(app.get('port'), () => {
-    console.log("Node app is running on port", app.get('port'));
-})
+

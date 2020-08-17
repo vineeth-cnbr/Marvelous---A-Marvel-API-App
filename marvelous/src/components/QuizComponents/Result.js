@@ -34,7 +34,11 @@ const Result = ({ gameId, onStart, name }) => {
       <h1 className=' ui green header'>
         Congratulations!! <br></br>
       </h1>
-      <h2>You got {points} points !!</h2>
+      <h2>
+        You got{' '}
+        <span style={{ color: 'yellow', fontSize: '2.5rem' }}>{points}</span>{' '}
+        points !!
+      </h2>
       <h3>Wanna go again? </h3>
       <StartGameButton onStart={onStart} name={name} />
       <br />
