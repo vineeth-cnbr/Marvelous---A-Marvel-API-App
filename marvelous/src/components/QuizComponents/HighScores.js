@@ -20,7 +20,7 @@ const HighScores = () => {
         newhighScores.pop();
       }
       setHighscores(newhighScores);
-    }
+    } // eslint-disable-next-line
   }, [newScore]);
 
   useEffect(() => {
