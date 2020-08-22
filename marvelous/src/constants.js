@@ -7,7 +7,7 @@ export const VIEWS = {
 }
 
 //No of questions for the quiz
-export const NUMBER_OF_QUESTIONS = 10;
+export const NUMBER_OF_QUESTIONS = 15;
 
 //Keyword to pass the question
 export const PASS = 'Pass';
