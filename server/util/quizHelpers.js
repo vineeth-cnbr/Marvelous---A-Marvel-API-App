@@ -59,7 +59,7 @@ exports.createQuestion = async () => {
         let tries = 10;
         //Get a random character
         do {
-            let randomOffset = Math.floor((Math.random() * 162) + 1); // 162 is the max number of characters for events 29,253
+            let randomOffset = Math.floor((Math.random() * 162) + 1); // 162 is the max number of characters for events 29,253,238,240,321,297
             let response = await marvel.get('characters', { params: { events: '29,253,238,240,321,297', offset: randomOffset } })
 
             characters = response.data.data.results;

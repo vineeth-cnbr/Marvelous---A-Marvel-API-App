@@ -20,8 +20,8 @@ const HighScores = () => {
         newhighScores.pop();
       }
       setHighscores(newhighScores);
-    } // eslint-disable-next-line
-  }, [newScore, highScores]);
+    }
+  }, [newScore]);
 
   useEffect(() => {
     //Initially load up the high scores.
@@ -32,7 +32,6 @@ const HighScores = () => {
     });
     //Live update the highscores
     socket.on(events.HIGHSCORES, updateHighScore);
-    // eslint-disable-next-line
   }, []);
 
   const updateHighScore = (scores) => {
@@ -46,7 +45,7 @@ const HighScores = () => {
   const renderTrophy = (place) => {
     switch (place) {
       case 1:
-        return <i style={{ color: '#ffd700' }} class=' trophy icon'></i>;
+        return <i style={{ color: '#ffd700' }} className=' trophy icon'></i>;
       case 2:
         return <i style={{ color: '#c0c0c0' }} className=' trophy icon'></i>;
       case 3:
@@ -56,6 +55,7 @@ const HighScores = () => {
     }
   };
 
+  let place = 1;
   return (
     <div>
       <h1 className='app-font'>HIGH SCORES</h1>
@@ -70,16 +70,22 @@ const HighScores = () => {
         </thead>
         <tbody>
           {highScores.map(({ name, score }, index) => {
+            if (index > 0) {
+              if (highScores[index - 1].score !== score) {
+                place = place + 1;
+              }
+            }
+
             return (
               <tr key={index}>
-                <td>{index + 1}</td>
+                <td>{place}</td>
                 <td>
                   <h4 className='ui inverted'>
                     <p className='header'>{name}</p>
                   </h4>
                 </td>
                 <td>
-                  {score}&emsp;{renderTrophy(index + 1)}
+                  {score}&emsp;{renderTrophy(place)}
                 </td>
               </tr>
             );
