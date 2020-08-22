@@ -73,6 +73,7 @@ const Question = ({ gameId, question, number, next }) => {
           <h4>Game points</h4>
           <li>Correct answer: +10 points</li>
           <li>Wrong answer: -5 points</li>
+          <li>Pass: 0 points</li>
         </div>
         {/* <div>{isCorrect ? <i className='green check icon'></i> : null}</div> */}
       </div>
