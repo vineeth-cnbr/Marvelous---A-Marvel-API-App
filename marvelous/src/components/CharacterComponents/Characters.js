@@ -54,6 +54,7 @@ const Characters = (props) => {
             <h1 className="ui header app-secondary-color app-header"  >
                 <i><b> CHARACTERS</b></i>
             </h1>
+            <p>These are a list of some of the charcaters appeared in comics published by Marvel.</p>
             <br></br>
             {renderCharacterGallery()}
             <br /><br /><br />

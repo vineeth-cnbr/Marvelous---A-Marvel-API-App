@@ -43,7 +43,7 @@ app.get("/characters", (req, res) => {
     if (Number.isNaN(page)) {
         page = 1;
     }
-    marvel.get('characters', { params: { events: '238,314', limit: 18, offset: page * 18 } }).then(response => {
+    marvel.get('characters', { params: { events: '29,253,238,240,321,297', limit: 18, offset: page * 18 } }).then(response => {
         let results = response.data.data.results.map(result => _.omit(result, ['comics', 'stories', 'events', 'series']));
         res.send(results)
     }).catch(error => {

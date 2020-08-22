@@ -50,6 +50,7 @@ const Events = (props) => {
             <h1 className="ui header app-secondary-color app-header"  >
                 <i><b>EVENTS</b></i>
             </h1>
+            <p>These are a list of major events or multi-book stories published by Marvel. </p>
             <br></br>
             {renderEventGallery()}
             {renderPagination()}
